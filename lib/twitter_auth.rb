@@ -6,6 +6,10 @@ module TwitterAuth
     @config[environment] ||= YAML.load(File.open(File.join(Rails.root, 'config', 'twitter_auth.yml')).read)[environment]
   end
 
+  def self.update_config(new_config)
+    config.merge!(new_config.stringify_keys)
+  end
+
   def self.base_url
     config['base_url'] || 'https://twitter.com'    
   end
