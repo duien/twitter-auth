@@ -78,7 +78,7 @@ module TwitterAuth
 
     def twitter
       if TwitterAuth.oauth?
-        TwitterAuth::Dispatcher::Oauth.new(self)
+        TwitterAuth::Dispatcher::Oauth.new(self, true)
       else
         TwitterAuth::Dispatcher::Basic.new(self)
       end

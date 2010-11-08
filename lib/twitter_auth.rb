@@ -63,7 +63,7 @@ module TwitterAuth
   end
   
   # The OAuth consumer used by TwitterAuth for authentication. The consumer key and secret are set in your application's +config/twitter.yml+
-  def self.consumer
+  def self.consumer proxiable=false
     options = {:site => TwitterAuth.base_url}
     [ :authorize_path, 
       :request_token_path,
@@ -72,6 +72,8 @@ module TwitterAuth
       :signature_method ].each do |oauth_option|
       options[oauth_option] = TwitterAuth.config[oauth_option.to_s] if TwitterAuth.config[oauth_option.to_s]
     end
+
+    options[:request_endpoint] = TwitterAuth.config['api_proxy'] if proxiable && TwitterAuth.config['api_proxy']
 
     OAuth::Consumer.new(
       config['oauth_consumer_key'],          
