@@ -3,7 +3,11 @@ module TwitterAuth
 
   def self.config(environment=Rails.env)
     @config ||= {}
-    @config[environment] ||= YAML.load(File.open(File.join(Rails.root, 'config', 'twitter_auth.yml')).read)[environment]
+    begin
+      @config[environment] ||= YAML.load(File.open(File.join(Rails.root, 'config', 'twitter_auth.yml')).read)[environment]
+    rescue Errno::ENOENT
+      @config
+    end
   end
 
   def self.update_config(new_config)
